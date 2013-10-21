@@ -312,12 +312,12 @@ public class StateMachine extends StateMachineBase {
 
         } else if (cycle == 2) {
             findTextArea(f).setText("Hurray! You have successfully completed cycle-2. You have the option of either attempting the ‘money bag’ question for cycle-2 and win the N750 MTN RECHARGE CARD "
-                    + "instantly or you skip it for cycle-3 which has N750 MTN RECHARGE CARD as the winning prize \n"
+                    + "instantly or you skip it for cycle-3 which has N1500 MTN RECHARGE CARD as the winning prize \n"
                     + "Please note that you will be charged N50 to play cycle-3");
 
         } else if (cycle == 3) {
             findTextArea(f).setText("Hurray! You have successfully completed cycle-3. You have the option of either attempting the ‘money bag’ question for cycle-3 and win the N1500 MTN RECHARGE CARD"
-                    + " instantly or you skip it for cycle-4 which has N1500 MTN RECHARGE CARD as the winning prize.\n"
+                    + " instantly or you skip it for cycle-4 which has N3000 MTN RECHARGE CARD as the winning prize.\n"
                     + "Please note that you will be charged N50 to play cycle-4");
         } else if (cycle == 4) {
             findTextArea(f).setText("Hurray! You have successfully completed cycle-4. You have the option of either attempting the ‘money bag’ question for cycle-4 and win the N3000 MTN RECHARGE CARD"
@@ -422,13 +422,14 @@ public class StateMachine extends StateMachineBase {
         findLevelLabel(f).setText("Cycle " + (cycle + 1) + " Level " + level);
         // TitleArea ta = new
         findCountLabel(f).setText(correct + "/" + answered);
-
+        findTimerLabel(findContainer(f)).setText(String.valueOf(time));
         ui = new UITimer(new Runnable() {
+            
             public void run() {
-                --time;
+              --time;
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 findTimerLabel(findContainer(f)).setText(String.valueOf(time));
-                f.revalidate();
+                //f.revalidate();
                 if (time <= 0) {
                     ui.cancel();
                     System.out.println("Time up");
@@ -885,14 +886,14 @@ public class StateMachine extends StateMachineBase {
         final RadioButton rB = findOptionBRB(c);
         final RadioButton rC = findOptionCRB(c);
         findOptionARB(c).addActionListener(new ActionListener() {
-            private boolean lock;
+           // private boolean lock;
 
             public void actionPerformed(ActionEvent evt) {
-                if (lock) {
-                    return;
-                }
-
-                lock = true;
+//                if (lock) {
+//                    return;
+//                }
+//
+//                lock = true;
 
                 if (rA.isSelected()) {
                     rB.setSelected(false);
@@ -1011,17 +1012,17 @@ public class StateMachine extends StateMachineBase {
                         System.out.println("the wrong " + wrongAttempt);
 
 
-                        if (time == 0) {
-                            ui.cancel();
-                            System.out.println("time up4");
-                        }
+//                        if (time == 0) {
+//                            ui.cancel();
+//                            System.out.println("time up4");
+//                        }
 
                         Dialog dlgWrong = new Dialog("WRONG!");
                         if (mm.isPlaying()) {
                             mm.pause();
-                            Beepp("/wrongbeep.wav");
-                            playMusic("/soundtrack.mp3");
+                            Beepp("/wrongbeep.wav");                            
                         }
+                        playMusic("/soundtrack.mp3");
                         dlgWrong.addComponent(new Label(wrong));
                         dlgWrong.setDialogType(Dialog.TYPE_ALARM);
                         dlgWrong.setTimeout(1000);
@@ -1051,22 +1052,22 @@ public class StateMachine extends StateMachineBase {
                     }
                     //}
                    // c.setScrollableY(true);
-                    f.animateLayoutAndWait(500);//revalidate();
-                    lock = false;
+                    f.revalidate();
+//                    lock = false;
                 }
             }
         });
 
         findOptionBRB(c).addActionListener(new ActionListener() {
-            private boolean lock;
+            //private boolean lock;
 
             public void actionPerformed(ActionEvent evt) {
 
-                if (lock) {
-                    return;
-                }
-
-                lock = true;
+//                if (lock) {
+//                    return;
+//                }
+//
+//                lock = true;
 
                 if (rB.isSelected()) {
                     rA.setSelected(false);
@@ -1183,18 +1184,18 @@ public class StateMachine extends StateMachineBase {
                         wrongAttempt.add(aQuestion.getId());
                         System.out.println("the wrong " + wrongAttempt);
 
-
-                        if (time == 0) {
-                            ui.cancel();
-                            System.out.println("time up3");
-                        }
+//
+//                        if (time == 0) {
+//                            ui.cancel();
+//                            System.out.println("time up3");
+//                        }
                         System.out.println("You are wrong");
                         Dialog dlgWrong = new Dialog("WRONG!");
-                        if (mm.isPlaying()) {
-                            mm.pause();
-                            Beepp("/wrongbeep.wav");
-                            playMusic("/soundtrack.mp3");
-                        }
+//                        if (mm.isPlaying()) {
+//                            mm.pause();
+//                            Beepp("/wrongbeep.wav");
+//                            playMusic("/soundtrack.mp3");
+//                        }
                         dlgWrong.addComponent(new Label(wrong));
                         dlgWrong.setTimeout(1000);
                         dlgWrong.show();
@@ -1222,20 +1223,20 @@ public class StateMachine extends StateMachineBase {
                     }
 
                     c.setScrollableY(true);
-                    f.animateLayoutAndWait(500);//revalidate();
-                    lock = false;
+                    f.revalidate();
+//                    lock = false;
                 }
             }
         });
         findOptionCRB(c).addActionListener(new ActionListener() {
-            private boolean lock;
+           // private boolean lock;
 
             public void actionPerformed(ActionEvent evt) {
-                if (lock) {
-                    return;
-                }
-
-                lock = true;
+//                if (lock) {
+//                    return;
+//                }
+//
+//                lock = true;
 
                 if (rC.isSelected()) {
                     rA.setSelected(false);
@@ -1354,18 +1355,18 @@ public class StateMachine extends StateMachineBase {
 
 //
 //                        }
-                        if (time == 0) {
-                            ui.cancel();
-                            System.out.println("time up3");
-                        }
+//                        if (time == 0) {
+//                            ui.cancel();
+//                            System.out.println("time up3");
+//                        }
                         System.out.println("You are wrong");
 
                         Dialog dlgWrong = new Dialog("WRONG!");
-                        if (mm.isPlaying()) {
-                            mm.pause();
-                            Beepp("/wrongbeep.wav");
-                            playMusic("/soundtrack.mp3");
-                        }
+//                        if (mm.isPlaying()) {
+//                            mm.pause();
+//                            Beepp("/wrongbeep.wav");
+//                            playMusic("/soundtrack.mp3");
+//                        }
                         dlgWrong.addComponent(new Label(wrong));
                         dlgWrong.setTimeout(1000);
                         dlgWrong.show();
@@ -1394,7 +1395,7 @@ public class StateMachine extends StateMachineBase {
                     c.setScrollableY(true);
 
                     f.animateLayoutAndWait(500);//revalidate();
-                    lock = false;
+//                    lock = false;
                 }
 
             }
@@ -1537,7 +1538,7 @@ public class StateMachine extends StateMachineBase {
 //            mbq = quesVector2.elementAt(n);
 //
 //        }
-
+        findTimerLabelMB(f).setText(String.valueOf(timeMB));
         ui = new UITimer(new Runnable() {
             public void run() {
                 --timeMB;
@@ -1553,7 +1554,7 @@ public class StateMachine extends StateMachineBase {
                     showForm("StartPage", null);
                 } else {
                     findTimerLabelMB(f).setText(String.valueOf(timeMB));
-                    f.revalidate();
+                    //f.revalidate();
                 }
 
             }
