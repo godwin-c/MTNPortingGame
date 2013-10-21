@@ -18,6 +18,7 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
+import com.codename1.ui.util.UITimer;
 import com.mtechcomm.portinggame.Questions;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,6 +60,7 @@ public class StateMachine extends StateMachineBase {
     Vector<String> questionAnswered;
     Vector<Hashtable> quesVector, quesVector2 = new Vector<Hashtable>();
     Hashtable quesHash, quesHash2, mbq;
+    UITimer ui;
     //Vector<Hashtable> temp;
     Image image1 = fetchResourceFile().getImage("airtel.png");
     Image image2 = fetchResourceFile().getImage("etisalat.png");
@@ -420,23 +422,15 @@ public class StateMachine extends StateMachineBase {
         findLevelLabel(f).setText("Cycle " + (cycle + 1) + " Level " + level);
         // TitleArea ta = new
         findCountLabel(f).setText(correct + "/" + answered);
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            private boolean lock;
-            @Override
+
+        ui = new UITimer(new Runnable() {
             public void run() {
                 --time;
-                if (lock) {
-                    return;
-                }
-                
-                lock = true;
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 findTimerLabel(findContainer(f)).setText(String.valueOf(time));
-                f.animateLayoutAndWait(800);//revalidate();
-                lock = false;
-                
+                f.revalidate();
                 if (time <= 0) {
-                    timer.cancel();
+                    ui.cancel();
                     System.out.println("Time up");
                     if (correct < 5) {
                         boolean condition = Dialog.show("Oops!!!", "Sorry your time is up. Do you want to try again? It will cost you N50.", "Play again", "Close");
@@ -478,9 +472,6 @@ public class StateMachine extends StateMachineBase {
                                 questionAnswered.clear();
                                 questionAnswered = null;
                             }
-                            // showForm("DisplayAll", null);
-                            // findTimerLabel(findContainer(f)).setText(String.valueOf(time));
-                            //Collections.shuffle(quesVector);
 
                             Container c = findContainer1(f);
                             FlowLayout fl = new FlowLayout();
@@ -497,7 +488,7 @@ public class StateMachine extends StateMachineBase {
                                 Hashtable hashtable = quesVector.elementAt(i);
                                 c.addComponent(addImage((Image) hashtable.get("SmallImage"), (Image) hashtable.get("LargeImage"), hashtable.get("Question").toString(), i, hashtable.get("id").toString(), hashtable.get("option_1").toString(), hashtable.get("option_2").toString(), hashtable.get("option_3").toString(), hashtable.get("correct_option").toString(), f));
                             }
-                            
+
                             time = 60;
                             showForm("DisplayAll", null);
 
@@ -526,12 +517,9 @@ public class StateMachine extends StateMachineBase {
                                 time = 60;
                                 answered = 0;
                                 correct = 0;
-//                                        if (mm.isPlaying()) {
-//                                            mm.pause();
-//                                            playMusic("/soundtrack.mp3");
-//                                        }
+
                                 if (quesVector == null || quesVector.isEmpty()) {
-//            System.out.println("Calling connectDatabase(" + level + ") and failedattempts is " + failedAttempts);
+
                                     System.out.println("the level used is " + level);
                                     connectDatabase(level);
                                     if (status1 != null && ("200".equals(status1))) {
@@ -558,20 +546,6 @@ public class StateMachine extends StateMachineBase {
                                         d.show();
                                     }
 
-
-
-//                                    if (status1 != null) {
-//                                        if ("200".equals(status1)) {
-//                                            // saveQuestions();
-//                                            //  System.out.println("The vector" + quesVector);
-//                                            Collections.shuffle(quesVector);
-//
-//                                            //failedAttempts = 0;
-//                                            startButton();
-//                                            showForm("DisplayAll", null);
-//
-//                                        }
-//                                    }
                                 }
                             }
                         };
@@ -590,9 +564,165 @@ public class StateMachine extends StateMachineBase {
                         Dialog.show("Hurray!!!", text, cmds);
                     }
                 }
-//                f.revalidate();
+
             }
-        }, 1000, 1000);
+        });
+        ui.schedule(1000, true, f);
+
+//        timer = new Timer();
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            private boolean lock;
+//
+//            @Override
+//            public void run() {
+//                --time;
+//                if (lock) {
+//                    return;
+//                }
+//
+//                lock = true;
+//                findTimerLabel(findContainer(f)).setText(String.valueOf(time));
+//                f.animateLayoutAndWait(800);//revalidate();
+//                lock = false;
+//
+//                if (time <= 0) {
+//                    timer.cancel();
+//                    System.out.println("Time up");
+//                    if (correct < 5) {
+//                        boolean condition = Dialog.show("Oops!!!", "Sorry your time is up. Do you want to try again? It will cost you N50.", "Play again", "Close");
+//                        if (condition != true) {
+//                            time = 60;
+//                            correct = 0;
+//                            answered = 0;
+//                            correctAnswer = null;
+//                            //vector.clear();
+//                            if (wrongAttempt != null) {
+//                                wrongAttempt.clear();
+//                            }
+//                            if (idPicked != null) {
+//                                idPicked.clear();
+//                            }
+//                            if (questionAnswered != null) {
+//                                questionAnswered.clear();
+//                            }
+//                            // saveQuestions();
+//                            Collections.shuffle(quesVector);
+//                            showForm("StartPage", null);
+//
+//                        } else {
+//                            correct = 0;
+//                            answered = 0;
+//
+//                            level = 1;
+//                            counter = 1;
+//                            correctAnswer = null;
+//                            if (wrongAttempt != null) {
+//                                wrongAttempt.clear();
+//                                wrongAttempt = null;
+//                            }
+//                            if (idPicked != null) {
+//                                idPicked.clear();
+//                                idPicked = null;
+//                            }
+//                            if (questionAnswered != null) {
+//                                questionAnswered.clear();
+//                                questionAnswered = null;
+//                            }
+//
+//                            Container c = findContainer1(f);
+//                            FlowLayout fl = new FlowLayout();
+//                            fl.setValign(0);
+//                            fl.setAlign(4);
+//                            c.setLayout(fl);
+//                            c.setScrollableY(true);
+//                            c.removeAll();
+//                            Collections.shuffle(quesVector);
+//                            startButton();
+//                            for (int i = 0; i < quesVector.size(); i++) {
+//                                //int n = r.nextInt(27);
+//
+//                                Hashtable hashtable = quesVector.elementAt(i);
+//                                c.addComponent(addImage((Image) hashtable.get("SmallImage"), (Image) hashtable.get("LargeImage"), hashtable.get("Question").toString(), i, hashtable.get("id").toString(), hashtable.get("option_1").toString(), hashtable.get("option_2").toString(), hashtable.get("option_3").toString(), hashtable.get("correct_option").toString(), f));
+//                            }
+//
+//                            time = 60;
+//                            showForm("DisplayAll", null);
+//
+//
+//                        }
+//                    } else {
+//                        Command[] cmds = new Command[2];
+//                        cmds[0] = new Command("Yes") {
+//                            @Override
+//                            public void actionPerformed(ActionEvent evt) {
+//                                //super.actionPerformed(evt); //To change body of generated methods, choose Tools | Templates.
+//                                if (quesVector != null) {
+//                                    quesVector.clear();
+//                                }
+//                                correctAnswer = null;
+//                                if (wrongAttempt != null) {
+//                                    wrongAttempt.clear();
+//                                }
+//                                if (idPicked != null) {
+//                                    idPicked.clear();
+//                                }
+//                                if (questionAnswered != null) {
+//                                    questionAnswered.clear();
+//                                }
+//                                // vector.clear();
+//                                time = 60;
+//                                answered = 0;
+//                                correct = 0;
+//
+//                                if (quesVector == null || quesVector.isEmpty()) {
+//
+//                                    System.out.println("the level used is " + level);
+//                                    connectDatabase(level);
+//                                    if (status1 != null && ("200".equals(status1))) {
+//                                        if ((quesVector != null && (!quesVector.isEmpty())) && (!errorRecieved)) {
+//
+//                                            Collections.shuffle(quesVector);
+//                                            startButton();
+//                                            showForm("DisplayAll", null);
+//                                        } else {
+//                                            Dialog d = new Dialog("Ouch!!!");
+//                                            TextArea t = new TextArea("You might need to check your network connection");
+//                                            t.setUIID("TextArea");
+//                                            d.addComponent(t);
+//                                            d.setTimeout(3000);
+//                                            d.show();
+//
+//                                        }
+//                                    } else if (status1 == null) {
+//                                        Dialog d = new Dialog("Ouch!!!");
+//                                        TextArea t = new TextArea("You might need to check your network connection");
+//                                        t.setUIID("TextArea");
+//                                        d.addComponent(t);
+//                                        d.setTimeout(3000);
+//                                        d.show();
+//                                    }
+//
+//                                }
+//                            }
+//                        };
+//
+//                        cmds[1] = new Command("No") {
+//                            @Override
+//                            public void actionPerformed(ActionEvent evt) {
+//                                //super.actionPerformed(evt); //To change body of generated methods, choose Tools | Templates.
+//                                showForm("StartPage", null);
+//                            }
+//                        };
+//
+//                        TextArea text = new TextArea();
+//                        text.setText("You have successfully completed this level, do you want to move to the next level?");
+//                        text.setEditable(false);
+//                        Dialog.show("Hurray!!!", text, cmds);
+//                    }
+//                }
+////                f.revalidate();
+//            }
+//        }, 1000, 1000);
 
         Container c = findContainer1(f);
         // temp = new Vector<Hashtable>();
@@ -618,7 +748,7 @@ public class StateMachine extends StateMachineBase {
         Command exitCmd = new Command("Home") {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                timer.cancel();
+                ui.cancel();
                 time = 60;
                 showForm("StartPage", null);
             }
@@ -648,24 +778,30 @@ public class StateMachine extends StateMachineBase {
 
         b.addActionListener(new ActionListener() {
             private boolean lock;
+
             public void actionPerformed(ActionEvent evt) {
                 //correct++;
-                 if (lock) {
+                if (lock) {
                     return;
                 }
-                
+
                 lock = true;
                 //findTimerLabel(findContainer(f)).setText(String.valueOf(time));
-               // f.animateLayoutAndWait(800);//revalidate();
-                
-                
+                // f.animateLayoutAndWait(800);//revalidate();
+
+
                 answered++;
                 findCountLabel(f).setText(correct + "/" + answered);
                 System.out.println("correct option +++++++++++++++++++" + corrAns);
                 aQuestion = new Questions(id, question, optA, optB, optC, corrAns, (Image) i, (Image) j);
 
                 Container c1 = findContainer1(f);
-                c1.setLayout(new BorderLayout());
+                FlowLayout fl = new FlowLayout();
+                
+                fl.setValign(4);
+                fl.setAlign(4);
+                
+                c1.setLayout(fl);
                 if (idPicked == null) {
                     idPicked = new Vector<String>();
                 }
@@ -687,9 +823,9 @@ public class StateMachine extends StateMachineBase {
 //                c1.setLayout(fl);
                 //c1.setPreferredSize(new Dimension(Display.getInstance().getDisplayWidth(), Display.getInstance().getDisplayHeight() / 2));
                 c1.removeAll();
-                c1.addComponent(BorderLayout.CENTER, addQuestion(aQuestion.getQuestions(), aQuestion.getImage(), aQuestion.getLargeImage(), aQuestion.getOptionA(), aQuestion.getOptionB(), aQuestion.getOptionC(), aQuestion.getCorrectAnswer(), f));
+                c1.addComponent(addQuestion(aQuestion.getQuestions(), aQuestion.getImage(), aQuestion.getLargeImage(), aQuestion.getOptionA(), aQuestion.getOptionB(), aQuestion.getOptionC(), aQuestion.getCorrectAnswer(), f));
 
-                
+
                 f.animateLayoutAndWait(500);//revalidate();
                 lock = false;
             }
@@ -736,8 +872,8 @@ public class StateMachine extends StateMachineBase {
 
         Resources res = fetchResourceFile();
         final Container c = createContainer(res, "QuestionRenderer");
-        Container c2 = findContainer1(c);
-        c2.getStyle().setBgImage(j.scaledWidth(Display.getInstance().getDisplayWidth() / 2));
+        //Container c2 = findContainer1(c);
+       // c2.getStyle().setBgImage(j.scaledWidth(Display.getInstance().getDisplayWidth() / 2));
         // c2.getStyle().setBackgroundType(Style.BACKGROUND_IMAGE_SCALED,true);
         //c2.getStyle().setBgImage(j);
         //.scaled(Display.getInstance().getDisplayWidth(),Display.getInstance().getDisplayHeight()-100)/*, Display.getInstance().getDisplayHeight() - 200)*/);
@@ -750,13 +886,14 @@ public class StateMachine extends StateMachineBase {
         final RadioButton rC = findOptionCRB(c);
         findOptionARB(c).addActionListener(new ActionListener() {
             private boolean lock;
+
             public void actionPerformed(ActionEvent evt) {
-                 if (lock) {
+                if (lock) {
                     return;
                 }
-                
+
                 lock = true;
-                
+
                 if (rA.isSelected()) {
                     rB.setSelected(false);
                     rC.setSelected(false);
@@ -767,7 +904,7 @@ public class StateMachine extends StateMachineBase {
                         correctAnswer = aQuestion.getId();
                         findCountLabel(f).setText(correct + "/" + answered);
                         if (correct == 5) {
-                            timer.cancel();
+                            ui.cancel();
 
                             level++;
                             counter++;
@@ -875,7 +1012,7 @@ public class StateMachine extends StateMachineBase {
 
 
                         if (time == 0) {
-                            timer.cancel();
+                            ui.cancel();
                             System.out.println("time up4");
                         }
 
@@ -896,6 +1033,7 @@ public class StateMachine extends StateMachineBase {
                     fl.setValign(0);
                     fl.setAlign(4);
                     c.setLayout(fl);
+                    c.setScrollableY(true);
                     c.removeAll();
 
                     for (int i = 0; i < quesVector.size(); i++) {
@@ -912,7 +1050,7 @@ public class StateMachine extends StateMachineBase {
                         c.addComponent(addImage((Image) hashtable.get("SmallImage"), (Image) hashtable.get("LargeImage"), hashtable.get("Question").toString(), i, hashtable.get("id").toString(), hashtable.get("option_1").toString(), hashtable.get("option_2").toString(), hashtable.get("option_3").toString(), hashtable.get("correct_option").toString(), f));
                     }
                     //}
-                    c.setScrollableY(true);
+                   // c.setScrollableY(true);
                     f.animateLayoutAndWait(500);//revalidate();
                     lock = false;
                 }
@@ -921,14 +1059,15 @@ public class StateMachine extends StateMachineBase {
 
         findOptionBRB(c).addActionListener(new ActionListener() {
             private boolean lock;
+
             public void actionPerformed(ActionEvent evt) {
 
-                 if (lock) {
+                if (lock) {
                     return;
                 }
-                
+
                 lock = true;
-                
+
                 if (rB.isSelected()) {
                     rA.setSelected(false);
                     rC.setSelected(false);
@@ -939,7 +1078,7 @@ public class StateMachine extends StateMachineBase {
                         correctAnswer = aQuestion.getId();
                         System.out.println(correctAnswer);
                         if (correct == 5) {
-                            timer.cancel();
+                            ui.cancel();
 
                             level++;
                             counter++;
@@ -1046,7 +1185,7 @@ public class StateMachine extends StateMachineBase {
 
 
                         if (time == 0) {
-                            timer.cancel();
+                            ui.cancel();
                             System.out.println("time up3");
                         }
                         System.out.println("You are wrong");
@@ -1090,13 +1229,14 @@ public class StateMachine extends StateMachineBase {
         });
         findOptionCRB(c).addActionListener(new ActionListener() {
             private boolean lock;
+
             public void actionPerformed(ActionEvent evt) {
-                 if (lock) {
+                if (lock) {
                     return;
                 }
-                
+
                 lock = true;
-                
+
                 if (rC.isSelected()) {
                     rA.setSelected(false);
                     rB.setSelected(false);
@@ -1107,7 +1247,7 @@ public class StateMachine extends StateMachineBase {
                         correctAnswer = aQuestion.getId();
                         System.out.println(correctAnswer);
                         if (correct == 5) {
-                            timer.cancel();
+                            ui.cancel();
 
                             level++;
                             counter++;
@@ -1215,7 +1355,7 @@ public class StateMachine extends StateMachineBase {
 //
 //                        }
                         if (time == 0) {
-                            timer.cancel();
+                            ui.cancel();
                             System.out.println("time up3");
                         }
                         System.out.println("You are wrong");
@@ -1398,27 +1538,49 @@ public class StateMachine extends StateMachineBase {
 //
 //        }
 
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
+        ui = new UITimer(new Runnable() {
             public void run() {
                 --timeMB;
-                //f.revalidate();
-                findTimerLabelMB(f).setText(String.valueOf(timeMB));
-                f.animateLayoutAndWait(500);//revalidate();
-                if (timeMB == 0) {
-                    timer.cancel();
-                    System.out.println("Time up");
-                    Dialog.show("Oops!!!", "10 seconds over", "OK", null);
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+                if (timeMB < 0) {
+                    ui.cancel();
+                    Dialog.show("Oops!!!", "your 10 seconds is over", "OK", null);
                     if (mm.isPlaying()) {
                         mm.pause();
                         playMusic("/soundtrack.mp3");
                     }
                     showForm("StartPage", null);
+                } else {
+                    findTimerLabelMB(f).setText(String.valueOf(timeMB));
+                    f.revalidate();
                 }
 
             }
-        }, 1000, 1000);
+        });
+        ui.schedule(1000, true, f);
+
+//        timer = new Timer();
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                --timeMB;
+//                //f.revalidate();
+//                findTimerLabelMB(f).setText(String.valueOf(timeMB));
+//                f.animateLayoutAndWait(500);//revalidate();
+//                if (timeMB == 0) {
+//                    timer.cancel();
+//                    System.out.println("Time up");
+//                    Dialog.show("Oops!!!", "10 seconds over", "OK", null);
+//                    if (mm.isPlaying()) {
+//                        mm.pause();
+//                        playMusic("/soundtrack.mp3");
+//                    }
+//                    showForm("StartPage", null);
+//                }
+//
+//            }
+//        }, 1000, 1000);
 
         findMoneyBagQ(f).setText(mbq.get("Question").toString());
         findOptARBMB(f).setText(mbq.get("option_1").toString());
@@ -1429,7 +1591,7 @@ public class StateMachine extends StateMachineBase {
         findOptARBMB(f).addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 if (findOptARBMB(f).isSelected()) {
-                    timer.cancel();
+                    ui.cancel();
                     findOptBRBMB(f).setSelected(false);
                     findOptCRBMB(f).setSelected(false);
                 }
@@ -1477,7 +1639,7 @@ public class StateMachine extends StateMachineBase {
         findOptBRBMB(f).addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 if (findOptBRBMB(f).isSelected()) {
-                    timer.cancel();
+                    ui.cancel();
                     findOptARBMB(f).setSelected(false);
                     findOptCRBMB(f).setSelected(false);
                 }
@@ -1525,7 +1687,7 @@ public class StateMachine extends StateMachineBase {
         findOptCRBMB(f).addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 if (findOptCRBMB(f).isSelected()) {
-                    timer.cancel();
+                    ui.cancel();
                     findOptARBMB(f).setSelected(false);
                     findOptBRBMB(f).setSelected(false);
                 }

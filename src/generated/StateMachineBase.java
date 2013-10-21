@@ -10,6 +10,7 @@ package generated;
 import com.codename1.ui.*;
 import com.codename1.ui.util.*;
 import com.codename1.ui.plaf.*;
+import java.util.Hashtable;
 import com.codename1.ui.events.*;
 
 public abstract class StateMachineBase extends UIBuilder {
@@ -554,6 +555,7 @@ public abstract class StateMachineBase extends UIBuilder {
             return;
         }
 
+            return;
     }
 
 
@@ -648,6 +650,7 @@ public abstract class StateMachineBase extends UIBuilder {
             return;
         }
 
+            return;
     }
 
 
@@ -687,7 +690,7 @@ public abstract class StateMachineBase extends UIBuilder {
     }
 
     protected void beforeShowContainer(Container c) {
-    aboutToShowThisContainer = c;
+        aboutToShowThisContainer = c;
         if("InstructionForm".equals(c.getName())) {
             beforeContainerInstructionForm(c);
             aboutToShowThisContainer = null;
@@ -742,6 +745,7 @@ public abstract class StateMachineBase extends UIBuilder {
             return;
         }
 
+            return;
     }
 
 
@@ -835,6 +839,7 @@ public abstract class StateMachineBase extends UIBuilder {
             return;
         }
 
+            return;
     }
 
 
@@ -928,6 +933,7 @@ public abstract class StateMachineBase extends UIBuilder {
             return;
         }
 
+            return;
     }
 
 
@@ -1021,6 +1027,7 @@ public abstract class StateMachineBase extends UIBuilder {
             return;
         }
 
+            return;
     }
 
 
@@ -1057,6 +1064,196 @@ public abstract class StateMachineBase extends UIBuilder {
 
 
     protected void onCreateDisplayCongrats() {
+    }
+
+    protected Hashtable getFormState(Form f) {
+        Hashtable h = super.getFormState(f);
+        if("InstructionForm".equals(f.getName())) {
+            getStateInstructionForm(f, h);
+            aboutToShowThisContainer = null;
+            return h;
+        }
+
+        if("MoneyBagForm".equals(f.getName())) {
+            getStateMoneyBagForm(f, h);
+            aboutToShowThisContainer = null;
+            return h;
+        }
+
+        if("StartPage".equals(f.getName())) {
+            getStateStartPage(f, h);
+            aboutToShowThisContainer = null;
+            return h;
+        }
+
+        if("Main".equals(f.getName())) {
+            getStateMain(f, h);
+            aboutToShowThisContainer = null;
+            return h;
+        }
+
+        if("DisplayAll".equals(f.getName())) {
+            getStateDisplayAll(f, h);
+            aboutToShowThisContainer = null;
+            return h;
+        }
+
+        if("QuestionRenderer".equals(f.getName())) {
+            getStateQuestionRenderer(f, h);
+            aboutToShowThisContainer = null;
+            return h;
+        }
+
+        if("ImageRenderer".equals(f.getName())) {
+            getStateImageRenderer(f, h);
+            aboutToShowThisContainer = null;
+            return h;
+        }
+
+        if("SplashScreen".equals(f.getName())) {
+            getStateSplashScreen(f, h);
+            aboutToShowThisContainer = null;
+            return h;
+        }
+
+        if("DisplayCongrats".equals(f.getName())) {
+            getStateDisplayCongrats(f, h);
+            aboutToShowThisContainer = null;
+            return h;
+        }
+
+            return h;
+    }
+
+
+    protected void getStateInstructionForm(Form f, Hashtable h) {
+    }
+
+
+    protected void getStateMoneyBagForm(Form f, Hashtable h) {
+    }
+
+
+    protected void getStateStartPage(Form f, Hashtable h) {
+    }
+
+
+    protected void getStateMain(Form f, Hashtable h) {
+    }
+
+
+    protected void getStateDisplayAll(Form f, Hashtable h) {
+    }
+
+
+    protected void getStateQuestionRenderer(Form f, Hashtable h) {
+    }
+
+
+    protected void getStateImageRenderer(Form f, Hashtable h) {
+    }
+
+
+    protected void getStateSplashScreen(Form f, Hashtable h) {
+    }
+
+
+    protected void getStateDisplayCongrats(Form f, Hashtable h) {
+    }
+
+    protected void setFormState(Form f, Hashtable state) {
+        super.setFormState(f, state);
+        if("InstructionForm".equals(f.getName())) {
+            setStateInstructionForm(f, state);
+            aboutToShowThisContainer = null;
+            return;
+        }
+
+        if("MoneyBagForm".equals(f.getName())) {
+            setStateMoneyBagForm(f, state);
+            aboutToShowThisContainer = null;
+            return;
+        }
+
+        if("StartPage".equals(f.getName())) {
+            setStateStartPage(f, state);
+            aboutToShowThisContainer = null;
+            return;
+        }
+
+        if("Main".equals(f.getName())) {
+            setStateMain(f, state);
+            aboutToShowThisContainer = null;
+            return;
+        }
+
+        if("DisplayAll".equals(f.getName())) {
+            setStateDisplayAll(f, state);
+            aboutToShowThisContainer = null;
+            return;
+        }
+
+        if("QuestionRenderer".equals(f.getName())) {
+            setStateQuestionRenderer(f, state);
+            aboutToShowThisContainer = null;
+            return;
+        }
+
+        if("ImageRenderer".equals(f.getName())) {
+            setStateImageRenderer(f, state);
+            aboutToShowThisContainer = null;
+            return;
+        }
+
+        if("SplashScreen".equals(f.getName())) {
+            setStateSplashScreen(f, state);
+            aboutToShowThisContainer = null;
+            return;
+        }
+
+        if("DisplayCongrats".equals(f.getName())) {
+            setStateDisplayCongrats(f, state);
+            aboutToShowThisContainer = null;
+            return;
+        }
+
+            return;
+    }
+
+
+    protected void setStateInstructionForm(Form f, Hashtable state) {
+    }
+
+
+    protected void setStateMoneyBagForm(Form f, Hashtable state) {
+    }
+
+
+    protected void setStateStartPage(Form f, Hashtable state) {
+    }
+
+
+    protected void setStateMain(Form f, Hashtable state) {
+    }
+
+
+    protected void setStateDisplayAll(Form f, Hashtable state) {
+    }
+
+
+    protected void setStateQuestionRenderer(Form f, Hashtable state) {
+    }
+
+
+    protected void setStateImageRenderer(Form f, Hashtable state) {
+    }
+
+
+    protected void setStateSplashScreen(Form f, Hashtable state) {
+    }
+
+
+    protected void setStateDisplayCongrats(Form f, Hashtable state) {
     }
 
     protected void handleComponentAction(Component c, ActionEvent event) {
