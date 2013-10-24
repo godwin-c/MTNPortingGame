@@ -424,9 +424,8 @@ public class StateMachine extends StateMachineBase {
         findCountLabel(f).setText(correct + "/" + answered);
         findTimerLabel(findContainer(f)).setText(String.valueOf(time));
         ui = new UITimer(new Runnable() {
-            
             public void run() {
-              --time;
+                --time;
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 findTimerLabel(findContainer(f)).setText(String.valueOf(time));
                 //f.revalidate();
@@ -434,7 +433,7 @@ public class StateMachine extends StateMachineBase {
                     ui.cancel();
                     System.out.println("Time up");
                     if (correct < 5) {
-                        boolean condition = Dialog.show("Oops!!!", "Sorry your time is up. Do you want to try again? It will cost you N50.", "Play again", "Close");
+                        boolean condition = Dialog.show("Oops!!!", "Sorry your time is up. Do you want to try again at the cost of N50.00 ?", "Play again", "Close");
                         if (condition != true) {
                             time = 60;
                             correct = 0;
@@ -474,7 +473,8 @@ public class StateMachine extends StateMachineBase {
                                 questionAnswered = null;
                             }
 
-                            Container c = findContainer1(f);
+                            //Container c = findContainer1(f);
+                            Container c = new Container();
                             FlowLayout fl = new FlowLayout();
                             fl.setValign(0);
                             fl.setAlign(4);
@@ -489,8 +489,9 @@ public class StateMachine extends StateMachineBase {
                                 Hashtable hashtable = quesVector.elementAt(i);
                                 c.addComponent(addImage((Image) hashtable.get("SmallImage"), (Image) hashtable.get("LargeImage"), hashtable.get("Question").toString(), i, hashtable.get("id").toString(), hashtable.get("option_1").toString(), hashtable.get("option_2").toString(), hashtable.get("option_3").toString(), hashtable.get("correct_option").toString(), f));
                             }
-
+                            f.addComponent(BorderLayout.CENTER, c);
                             time = 60;
+                            //f.revalidate();
                             showForm("DisplayAll", null);
 
 
@@ -725,7 +726,10 @@ public class StateMachine extends StateMachineBase {
 //            }
 //        }, 1000, 1000);
 
-        Container c = findContainer1(f);
+        //Container c = findContainer1(f);
+        f.removeComponent(findContainer1(f));
+        Container c = new Container();
+
         // temp = new Vector<Hashtable>();
         FlowLayout fl = new FlowLayout();
         fl.setValign(0);
@@ -746,6 +750,7 @@ public class StateMachine extends StateMachineBase {
             }
             c.addComponent(addImage((Image) hashtable.get("SmallImage"), (Image) hashtable.get("LargeImage"), hashtable.get("Question").toString(), i, hashtable.get("id").toString(), hashtable.get("option_1").toString(), hashtable.get("option_2").toString(), hashtable.get("option_3").toString(), hashtable.get("correct_option").toString(), f));
         }
+        f.addComponent(BorderLayout.CENTER, c);
         Command exitCmd = new Command("Home") {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -778,15 +783,14 @@ public class StateMachine extends StateMachineBase {
         b.setIcon(i.scaledWidth(Display.getInstance().getDisplayWidth() / 5));
 
         b.addActionListener(new ActionListener() {
-            private boolean lock;
-
+//            private boolean lock;
             public void actionPerformed(ActionEvent evt) {
                 //correct++;
-                if (lock) {
-                    return;
-                }
-
-                lock = true;
+//                if (lock) {
+//                    return;
+//                }
+//
+//                lock = true;
                 //findTimerLabel(findContainer(f)).setText(String.valueOf(time));
                 // f.animateLayoutAndWait(800);//revalidate();
 
@@ -797,12 +801,13 @@ public class StateMachine extends StateMachineBase {
                 aQuestion = new Questions(id, question, optA, optB, optC, corrAns, (Image) i, (Image) j);
 
                 Container c1 = findContainer1(f);
+                f.removeComponent(c1);
+                Container c2 = new Container();
                 FlowLayout fl = new FlowLayout();
-                
                 fl.setValign(4);
                 fl.setAlign(4);
-                
-                c1.setLayout(fl);
+
+                c2.setLayout(fl);
                 if (idPicked == null) {
                     idPicked = new Vector<String>();
                 }
@@ -823,12 +828,12 @@ public class StateMachine extends StateMachineBase {
 //                fl.setAlign(4);
 //                c1.setLayout(fl);
                 //c1.setPreferredSize(new Dimension(Display.getInstance().getDisplayWidth(), Display.getInstance().getDisplayHeight() / 2));
-                c1.removeAll();
-                c1.addComponent(addQuestion(aQuestion.getQuestions(), aQuestion.getImage(), aQuestion.getLargeImage(), aQuestion.getOptionA(), aQuestion.getOptionB(), aQuestion.getOptionC(), aQuestion.getCorrectAnswer(), f));
+                c2.removeAll();
+                c2.addComponent(addQuestion(aQuestion.getQuestions(), aQuestion.getImage(), aQuestion.getLargeImage(), aQuestion.getOptionA(), aQuestion.getOptionB(), aQuestion.getOptionC(), aQuestion.getCorrectAnswer(), f));
 
-
-                f.animateLayoutAndWait(500);//revalidate();
-                lock = false;
+                f.addComponent(BorderLayout.CENTER, c2);
+                f.revalidate();
+//                lock = false;
             }
         });
 
@@ -874,7 +879,7 @@ public class StateMachine extends StateMachineBase {
         Resources res = fetchResourceFile();
         final Container c = createContainer(res, "QuestionRenderer");
         //Container c2 = findContainer1(c);
-       // c2.getStyle().setBgImage(j.scaledWidth(Display.getInstance().getDisplayWidth() / 2));
+        // c2.getStyle().setBgImage(j.scaledWidth(Display.getInstance().getDisplayWidth() / 2));
         // c2.getStyle().setBackgroundType(Style.BACKGROUND_IMAGE_SCALED,true);
         //c2.getStyle().setBgImage(j);
         //.scaled(Display.getInstance().getDisplayWidth(),Display.getInstance().getDisplayHeight()-100)/*, Display.getInstance().getDisplayHeight() - 200)*/);
@@ -886,8 +891,7 @@ public class StateMachine extends StateMachineBase {
         final RadioButton rB = findOptionBRB(c);
         final RadioButton rC = findOptionCRB(c);
         findOptionARB(c).addActionListener(new ActionListener() {
-           // private boolean lock;
-
+            // private boolean lock;
             public void actionPerformed(ActionEvent evt) {
 //                if (lock) {
 //                    return;
@@ -987,7 +991,7 @@ public class StateMachine extends StateMachineBase {
                                 };
 
                                 TextArea text = new TextArea();
-                                text.setText("You have successfully completed this level, do you want to move to the next level?");
+                                text.setText("You have successfully completed this level, do you want to move to the next level at no cost?");
                                 text.setEditable(false);
                                 Dialog.show("Hurray!!!", text, cmds);
                             }
@@ -1018,18 +1022,21 @@ public class StateMachine extends StateMachineBase {
 //                        }
 
                         Dialog dlgWrong = new Dialog("WRONG!");
-                        if (mm.isPlaying()) {
-                            mm.pause();
-                            Beepp("/wrongbeep.wav");                            
-                        }
-                        playMusic("/soundtrack.mp3");
+//                        if (mm.isPlaying()) {
+//                            mm.pause();
+//                            Beepp("/wrongbeep.wav");                            
+//                        }
+//                        playMusic("/soundtrack.mp3");
                         dlgWrong.addComponent(new Label(wrong));
                         dlgWrong.setDialogType(Dialog.TYPE_ALARM);
                         dlgWrong.setTimeout(1000);
                         dlgWrong.show();
 
                     }
-                    Container c = findContainer1(f);
+
+                    //f.removeComponent();
+                    //Container c = findContainer1(f);
+                    Container c = new Container();
                     FlowLayout fl = new FlowLayout();
                     fl.setValign(0);
                     fl.setAlign(4);
@@ -1051,7 +1058,8 @@ public class StateMachine extends StateMachineBase {
                         c.addComponent(addImage((Image) hashtable.get("SmallImage"), (Image) hashtable.get("LargeImage"), hashtable.get("Question").toString(), i, hashtable.get("id").toString(), hashtable.get("option_1").toString(), hashtable.get("option_2").toString(), hashtable.get("option_3").toString(), hashtable.get("correct_option").toString(), f));
                     }
                     //}
-                   // c.setScrollableY(true);
+                    // c.setScrollableY(true);
+                    f.addComponent(BorderLayout.CENTER, c);
                     f.revalidate();
 //                    lock = false;
                 }
@@ -1060,7 +1068,6 @@ public class StateMachine extends StateMachineBase {
 
         findOptionBRB(c).addActionListener(new ActionListener() {
             //private boolean lock;
-
             public void actionPerformed(ActionEvent evt) {
 
 //                if (lock) {
@@ -1159,7 +1166,7 @@ public class StateMachine extends StateMachineBase {
                                 };
 
                                 TextArea text = new TextArea();
-                                text.setText("You have successfully completed this level, do you want to move to the next level?");
+                                text.setText("You have successfully completed this level, do you want to move to the next level at no cost?");
                                 text.setEditable(false);
                                 Dialog.show("Hurray!!!", text, cmds);
                             }
@@ -1201,7 +1208,8 @@ public class StateMachine extends StateMachineBase {
                         dlgWrong.show();
 
                     }
-                    Container c = findContainer1(f);
+                    //Container c = findContainer1(f);
+                    Container c = new Container();
                     FlowLayout fl = new FlowLayout();
                     fl.setValign(0);
                     fl.setAlign(4);
@@ -1223,14 +1231,14 @@ public class StateMachine extends StateMachineBase {
                     }
 
                     c.setScrollableY(true);
+                    f.addComponent(BorderLayout.CENTER, c);
                     f.revalidate();
 //                    lock = false;
                 }
             }
         });
         findOptionCRB(c).addActionListener(new ActionListener() {
-           // private boolean lock;
-
+            // private boolean lock;
             public void actionPerformed(ActionEvent evt) {
 //                if (lock) {
 //                    return;
@@ -1328,7 +1336,7 @@ public class StateMachine extends StateMachineBase {
                                 };
 
                                 TextArea text = new TextArea();
-                                text.setText("You have successfully completed this level, do you want to move to the next level?");
+                                text.setText("You have successfully completed this level, do you want to move to the next level at no cost?");
                                 text.setEditable(false);
                                 Dialog.show("Hurray!!!", text, cmds);
                             }
@@ -1372,7 +1380,8 @@ public class StateMachine extends StateMachineBase {
                         dlgWrong.show();
 
                     }
-                    Container c = findContainer1(f);
+                    //Container c = findContainer1(f);
+                    Container c = new Container();
                     FlowLayout fl = new FlowLayout();
                     fl.setValign(0);
                     fl.setAlign(4);
@@ -1393,8 +1402,8 @@ public class StateMachine extends StateMachineBase {
                         c.addComponent(addImage((Image) hashtable.get("SmallImage"), (Image) hashtable.get("LargeImage"), hashtable.get("Question").toString(), i, hashtable.get("id").toString(), hashtable.get("option_1").toString(), hashtable.get("option_2").toString(), hashtable.get("option_3").toString(), hashtable.get("correct_option").toString(), f));
                     }
                     c.setScrollableY(true);
-
-                    f.animateLayoutAndWait(500);//revalidate();
+                    f.addComponent(BorderLayout.CENTER, c);
+                    f.revalidate();
 //                    lock = false;
                 }
 
@@ -2104,8 +2113,8 @@ public class StateMachine extends StateMachineBase {
         text1.setText("After each cycle, there will be a ‘money bag question’ that entitles you to a ‘prize’. "
                 + "The ‘prize’ will have to be won by answering the question that comes with the ‘money bag’. "
                 + "The ‘prize’ increases as the playing cycle increases. An attempt on the money bag question will take you to cycle 1"
-                + "If you attempt any of the ‘money bag’ questions either ‘CORRECT OR FAIL’ you will be taken bac"
-                + "k to the beginning of the game. If ‘CORRECT’, you would be rewarded instantly.");
+                + "If you attempt any of the ‘money bag’ questions either ‘CORRECT OR FAIL’ you will be taken back"
+                + " to the beginning of the game. If ‘CORRECT’, you would be rewarded instantly.");
 
         TextArea text2 = new TextArea();
         text2.setUIID("InstructionText");
